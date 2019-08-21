@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while true; do
+  archive=$(ls *.tar | head -1)
+  if [ ! -f "$archive" ]; then
+    exit 0
+  fi
+  echo "unpacking $archive"
+  tar xf "$archive"
+  rm -f "$archive"
+done
