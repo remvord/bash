@@ -1,0 +1,19 @@
+#!/bin/bash
+#TBASHLOG__=/tmp/tbash2.log
+
+if [ "s"${TBASHLOG__} = "s" ] ; then
+    TBASHLOG__="/tmp/tbash.log"
+fi
+
+if [ ! ${TEEBASH__} ] ; then
+    TEEBASH__=1
+    . $0 "$@" | tee -a ${TBASHLOG__}
+    exit $?
+fi
+
+NAME_WS="win7_clone"
+VAR1="$(vboxmanage snapshot "$NAME_WS" list | head -n 1 | sed s/')'//g | sed s/' '//g | awk -F":" '{print $5}')"
+VBoxManage snapshot $NAME_WS delete "$VAR1"
+VBoxManage snapshot $NAME_WS take `date +"%d-%m-%Y-%T"` --live
+
+echo "LOG================================================Finish `date +"%d-%m-%Y-%T"`"
